@@ -2,3 +2,7 @@ Pillow==9.5.0
 winotify==1.1.0
 pyinstaller==5.10.1
 playsound==1.2.2
+requests==2.29.0
+svglib==1.5.1
+reportlab==4.1.0
+rlpycairo==0.3.0

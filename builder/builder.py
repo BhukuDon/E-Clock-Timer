@@ -6,7 +6,7 @@ PyInstaller.__main__.run([
     '--windowed',
     "--clean",
     "--name=E Clock",
-    "--icon=assets\icon.ico",
+    "--icon=assets\image\icon.ico",
     "--distpath=",
 
 ])
