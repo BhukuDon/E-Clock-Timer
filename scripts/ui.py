@@ -89,6 +89,97 @@ class UI():
         for child in self.window.winfo_children():
             child.destroy()
         return
+    def initialize_img(self):
+        logo_pattern_img_path = "assets\image\pattern.png"
+        self.logo_pattern_img = Image.open(logo_pattern_img_path).resize((300,300))
+        self.logo_pattern_img = ImageTk.PhotoImage(self.logo_pattern_img)
+        
+        logo_img_path = "assets\image\icon.png"
+        self.logo_img = Image.open(logo_img_path).resize((194,78))
+        self.logo_img = ImageTk.PhotoImage(self.logo_img)
+        
+        setting_img_path = "assets\image\setting.png"
+        self.setting_img = Image.open(setting_img_path).resize((47,47))
+        self.setting_img = ImageTk.PhotoImage(self.setting_img)
+
+        blue_dial_img_path = r"assets\image\blue-dial.png"
+        self.blue_dial_img = Image.open(blue_dial_img_path).resize((500,500))
+        self.blue_dial_img = ImageTk.PhotoImage(self.blue_dial_img)
+        
+        green_dial_img_path = r"assets\image\green-dial.png"
+        self.green_dial_img = Image.open(green_dial_img_path).resize((500,500))
+        self.green_dial_img = ImageTk.PhotoImage(self.green_dial_img)
+
+        red_dial_img_path = r"assets\image\red-dial.png"
+        self.red_dial_img = Image.open(red_dial_img_path).resize((500,500))
+        self.red_dial_img = ImageTk.PhotoImage(self.red_dial_img)
+    
+        second_hand_img_path = "assets\image\second-hand.png"
+        self.second_hand_img = Image.open(second_hand_img_path).resize((210,210))
+        self.second_hand_img = ImageTk.PhotoImage(self.second_hand_img)
+        
+        minute_hand_img_path = "assets\image\minute-hand.png"
+        self.minute_hand_img = Image.open(minute_hand_img_path).resize((150,150))
+        self.minute_hand_img = ImageTk.PhotoImage(self.minute_hand_img)
+
+        dot_img_path = "assets\image\dot.png"
+        self.dot_img = Image.open(dot_img_path).resize((40,40))
+        self.dot_img = ImageTk.PhotoImage(self.dot_img)
+
+        home_blob_1_img_path = 'assets\image\home-blob1.png'
+        self.home_blob_1_img= Image.open(home_blob_1_img_path).resize((200,200))
+        self.home_blob_1_img = ImageTk.PhotoImage(self.home_blob_1_img)
+        
+        home_blob_2_img_path = 'assets\image\home-blob2.png'
+        self.home_blob_2_img= Image.open(home_blob_2_img_path).resize((240,240)).rotate(-30)
+        self.home_blob_2_img = ImageTk.PhotoImage(self.home_blob_2_img)
+        
+        home_blob_3_img_path = 'assets\image\home-blob3.png'
+        self.home_blob_3_img= Image.open(home_blob_3_img_path).resize((300,300)).rotate(20)
+        self.home_blob_3_img = ImageTk.PhotoImage(self.home_blob_3_img)
+
+        play_btn_img_path = 'assets\image\play.png'
+        self.play_btn_img = Image.open(play_btn_img_path).resize((40,40))
+        self.play_btn_img = ImageTk.PhotoImage(self.play_btn_img)
+        
+        pause_btn_img_path = 'assets\image\pause.png'
+        self.pause_btn_img = Image.open(pause_btn_img_path).resize((40,40))
+        self.pause_btn_img = ImageTk.PhotoImage(self.pause_btn_img)
+        
+        reset_btn_img_path = r'assets\image\reset.png'
+        self.reset_btn_img = Image.open(reset_btn_img_path).resize((40,40))
+        self.reset_btn_img = ImageTk.PhotoImage(self.reset_btn_img)
+        
+        complete_btn_img_path = r'assets\image\complete.png'
+        self.complete_btn_img = Image.open(complete_btn_img_path).resize((40,40))
+        self.complete_btn_img = ImageTk.PhotoImage(self.complete_btn_img)
+        
+        circle_blob_img_path = r'assets\image\circle-blob.png'
+        self.circle_blob_img = Image.open(circle_blob_img_path).resize((580,580))
+        self.circle_blob_img = ImageTk.PhotoImage(self.circle_blob_img)
+
+        done_img_path = "assets\image\done.png"
+        self.done_img = Image.open(done_img_path).resize((35,35))
+        self.done_img = ImageTk.PhotoImage(self.done_img)
+
+        
+        back_img_path = r"assets\image\back.png"
+        self.back_img = Image.open(back_img_path).resize((40,40))
+        self.back_img = ImageTk.PhotoImage(self.back_img)
+        
+        create_img_path = r"assets\image\add.png"
+        self.create_img = Image.open(create_img_path).resize((40,40))
+        self.create_img = ImageTk.PhotoImage(self.create_img)
+
+
+        back_img_path = r"assets\image\back.png"
+        self.back_img = Image.open(back_img_path).resize((40,40))
+        self.back_img = ImageTk.PhotoImage(self.back_img)
+
+        card_bg_img_path = r"assets\image\card-bg.png"
+        self.card_bg_img = Image.open(card_bg_img_path).resize((325,163))
+        self.card_bg_img = ImageTk.PhotoImage(self.card_bg_img)
+        return
 
 class Home_UI(UI):
     def __init__(self,window) -> None:
@@ -103,80 +194,6 @@ class Home_UI(UI):
         self.initialize_img()
         self.create_ui()
     
-    def initialize_img(self) -> None:
-        self.logo_pattern_img_path = "assets\image\pattern.png"
-        self.logo_pattern_img = Image.open(self.logo_pattern_img_path).resize((300,300))
-        self.logo_pattern_img = ImageTk.PhotoImage(self.logo_pattern_img)
-        
-        self.logo_img_path = "assets\image\icon.png"
-        self.logo_img = Image.open(self.logo_img_path).resize((194,78))
-        self.logo_img = ImageTk.PhotoImage(self.logo_img)
-        
-        self.setting_img_path = "assets\image\setting.png"
-        self.setting_img = Image.open(self.setting_img_path).resize((47,47))
-        self.setting_img = ImageTk.PhotoImage(self.setting_img)
-
-        self.blue_dial_img_path = r"assets\image\blue-dial.png"
-        self.blue_dial_img = Image.open(self.blue_dial_img_path).resize((500,500))
-        self.blue_dial_img = ImageTk.PhotoImage(self.blue_dial_img)
-        
-        self.green_dial_img_path = r"assets\image\green-dial.png"
-        self.green_dial_img = Image.open(self.green_dial_img_path).resize((500,500))
-        self.green_dial_img = ImageTk.PhotoImage(self.green_dial_img)
-
-        self.red_dial_img_path = r"assets\image\red-dial.png"
-        self.red_dial_img = Image.open(self.red_dial_img_path).resize((500,500))
-        self.red_dial_img = ImageTk.PhotoImage(self.red_dial_img)
-    
-        self.second_hand_img_path = "assets\image\second-hand.png"
-        self.second_hand_img = Image.open(self.second_hand_img_path).resize((210,210))
-        self.second_hand_img = ImageTk.PhotoImage(self.second_hand_img)
-        
-        self.minute_hand_img_path = "assets\image\minute-hand.png"
-        self.minute_hand_img = Image.open(self.minute_hand_img_path).resize((150,150))
-        self.minute_hand_img = ImageTk.PhotoImage(self.minute_hand_img)
-
-        self.dot_img_path = "assets\image\dot.png"
-        self.dot_img = Image.open(self.dot_img_path).resize((40,40))
-        self.dot_img = ImageTk.PhotoImage(self.dot_img)
-
-        self.home_blob_1_img_path = 'assets\image\home-blob1.png'
-        self.home_blob_1_img= Image.open(self.home_blob_1_img_path).resize((200,200))
-        self.home_blob_1_img = ImageTk.PhotoImage(self.home_blob_1_img)
-        
-        self.home_blob_2_img_path = 'assets\image\home-blob2.png'
-        self.home_blob_2_img= Image.open(self.home_blob_2_img_path).resize((240,240)).rotate(-30)
-        self.home_blob_2_img = ImageTk.PhotoImage(self.home_blob_2_img)
-        
-        self.home_blob_3_img_path = 'assets\image\home-blob3.png'
-        self.home_blob_3_img= Image.open(self.home_blob_3_img_path).resize((300,300)).rotate(20)
-        self.home_blob_3_img = ImageTk.PhotoImage(self.home_blob_3_img)
-
-        self.play_btn_img_path = 'assets\image\play.png'
-        self.play_btn_img = Image.open(self.play_btn_img_path).resize((40,40))
-        self.play_btn_img = ImageTk.PhotoImage(self.play_btn_img)
-        
-        self.pause_btn_img_path = 'assets\image\pause.png'
-        self.pause_btn_img = Image.open(self.pause_btn_img_path).resize((40,40))
-        self.pause_btn_img = ImageTk.PhotoImage(self.pause_btn_img)
-        
-        self.reset_btn_img_path = r'assets\image\reset.png'
-        self.reset_btn_img = Image.open(self.reset_btn_img_path).resize((40,40))
-        self.reset_btn_img = ImageTk.PhotoImage(self.reset_btn_img)
-        
-        self.complete_btn_img_path = r'assets\image\complete.png'
-        self.complete_btn_img = Image.open(self.complete_btn_img_path).resize((40,40))
-        self.complete_btn_img = ImageTk.PhotoImage(self.complete_btn_img)
-        
-        self.circle_blob_img_path = r'assets\image\circle-blob.png'
-        self.circle_blob_img = Image.open(self.circle_blob_img_path).resize((580,580))
-        self.circle_blob_img = ImageTk.PhotoImage(self.circle_blob_img)
-
-        self.done_img_path = "assets\image\done.png"
-        self.done_img = Image.open(self.done_img_path).resize((35,35))
-        self.done_img = ImageTk.PhotoImage(self.done_img)
-        return
-
     def create_ui(self) -> None:
 
         # Nav Part
@@ -511,26 +528,6 @@ class Setting_UI(UI):
         self.initialize_img()
         self.create_ui()
 
-    def initialize_img(self):
-        self.logo_pattern_img_path = "assets\image\pattern.png"
-        self.logo_pattern_img = Image.open(self.logo_pattern_img_path).resize((300,300))
-        self.logo_pattern_img = ImageTk.PhotoImage(self.logo_pattern_img)
-        
-        self.logo_img_path = "assets\image\icon.png"
-        self.logo_img = Image.open(self.logo_img_path).resize((194,78))
-        self.logo_img = ImageTk.PhotoImage(self.logo_img)
-        
-        self.back_img_path = r"assets\image\back.png"
-        self.back_img = Image.open(self.back_img_path).resize((40,40))
-        self.back_img = ImageTk.PhotoImage(self.back_img)
-        
-        self.create_img_path = r"assets\image\add.png"
-        self.create_img = Image.open(self.create_img_path).resize((40,40))
-        self.create_img = ImageTk.PhotoImage(self.create_img)
-
-        
-        return
-
     def create_ui(self):
         # Nav Part
         canvas = Canvas(bg=BG_COLOR,highlightthickness=0)
@@ -669,30 +666,8 @@ class Stats_UI(UI):
 
         # remove all and create
         self.clear()    
-
-
         self.initialize_img()
         self.create_ui2()
-        return
-
-    def initialize_img(self):
-        self.logo_pattern_img_path = "assets\image\pattern.png"
-        self.logo_pattern_img = Image.open(self.logo_pattern_img_path).resize((300,300))
-        self.logo_pattern_img = ImageTk.PhotoImage(self.logo_pattern_img)
-        
-        self.logo_img_path = "assets\image\icon.png"
-        self.logo_img = Image.open(self.logo_img_path).resize((194,78))
-        self.logo_img = ImageTk.PhotoImage(self.logo_img)
-        
-        self.back_img_path = r"assets\image\back.png"
-        self.back_img = Image.open(self.back_img_path).resize((40,40))
-        self.back_img = ImageTk.PhotoImage(self.back_img)
-
-        self.card_bg_img_path = r"assets\image\card-bg.png"
-        self.card_bg_img = Image.open(self.card_bg_img_path).resize((325,163))
-        self.card_bg_img = ImageTk.PhotoImage(self.card_bg_img)
-
-
         return
 
     def get_data(self) -> None:
