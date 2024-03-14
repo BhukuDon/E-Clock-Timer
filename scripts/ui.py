@@ -1,10 +1,11 @@
-from tkinter import Tk,PhotoImage,Label,Button,Canvas,Frame,W,Toplevel,messagebox,Entry
+from tkinter import Tk,PhotoImage,Label,Button,Canvas,Frame,messagebox,Entry,W,E,S,N,NE,NSEW,NW,SE,SW
 from PIL import Image,ImageTk
 from winotify import Notification, audio
 from playsound import playsound
 from scripts.config import Config
 from scripts.pixela import Pixela 
 from datetime import datetime as dt
+import webbrowser
 # ------------- Constants ------------- #
 
 RED_COLOR = "#F38181"
@@ -73,14 +74,14 @@ class UI():
         self.current_time = 0
         self.speed = 1000 # in ms
         self.work_done_sec = 0
+
+        self.btn_cursor = "hand2"
+
         pass
     def create_window(self):
         self.window = Tk()
         self.window.title("Home | EClock")
-        self.window.minsize(450,500)
-        self.window.config(bg=BG_COLOR,
-                           padx=25,
-                           pady=25)
+        self.window.config(bg=BG_COLOR)
         self.window.minsize(1280,720)
         self.window.iconbitmap("assets\image\icon.ico")
         return self.create_window
@@ -94,149 +95,228 @@ class Home_UI(UI):
         super().__init__()
         self.window = window
         self.window.title("Pixela Graph | E Clock")
+
+
+        self.font = ("Helvetica",30,'bold')
         # remove all and create
         self.clear()    
+        self.initialize_img()
         self.create_ui()
-
-
     
+    def initialize_img(self) -> None:
+        self.logo_pattern_img_path = "assets\image\pattern.png"
+        self.logo_pattern_img = Image.open(self.logo_pattern_img_path).resize((300,300))
+        self.logo_pattern_img = ImageTk.PhotoImage(self.logo_pattern_img)
+        
+        self.logo_img_path = "assets\image\icon.png"
+        self.logo_img = Image.open(self.logo_img_path).resize((194,78))
+        self.logo_img = ImageTk.PhotoImage(self.logo_img)
+        
+        self.setting_img_path = "assets\image\setting.png"
+        self.setting_img = Image.open(self.setting_img_path).resize((47,47))
+        self.setting_img = ImageTk.PhotoImage(self.setting_img)
+
+        self.blue_dial_img_path = r"assets\image\blue-dial.png"
+        self.blue_dial_img = Image.open(self.blue_dial_img_path).resize((500,500))
+        self.blue_dial_img = ImageTk.PhotoImage(self.blue_dial_img)
+        
+        self.green_dial_img_path = r"assets\image\green-dial.png"
+        self.green_dial_img = Image.open(self.green_dial_img_path).resize((500,500))
+        self.green_dial_img = ImageTk.PhotoImage(self.green_dial_img)
+
+        self.red_dial_img_path = r"assets\image\red-dial.png"
+        self.red_dial_img = Image.open(self.red_dial_img_path).resize((500,500))
+        self.red_dial_img = ImageTk.PhotoImage(self.red_dial_img)
+    
+        self.second_hand_img_path = "assets\image\second-hand.png"
+        self.second_hand_img = Image.open(self.second_hand_img_path).resize((210,210))
+        self.second_hand_img = ImageTk.PhotoImage(self.second_hand_img)
+        
+        self.minute_hand_img_path = "assets\image\minute-hand.png"
+        self.minute_hand_img = Image.open(self.minute_hand_img_path).resize((150,150))
+        self.minute_hand_img = ImageTk.PhotoImage(self.minute_hand_img)
+
+        self.dot_img_path = "assets\image\dot.png"
+        self.dot_img = Image.open(self.dot_img_path).resize((40,40))
+        self.dot_img = ImageTk.PhotoImage(self.dot_img)
+
+        self.home_blob_1_img_path = 'assets\image\home-blob1.png'
+        self.home_blob_1_img= Image.open(self.home_blob_1_img_path).resize((200,200))
+        self.home_blob_1_img = ImageTk.PhotoImage(self.home_blob_1_img)
+        
+        self.home_blob_2_img_path = 'assets\image\home-blob2.png'
+        self.home_blob_2_img= Image.open(self.home_blob_2_img_path).resize((240,240)).rotate(-30)
+        self.home_blob_2_img = ImageTk.PhotoImage(self.home_blob_2_img)
+        
+        self.home_blob_3_img_path = 'assets\image\home-blob3.png'
+        self.home_blob_3_img= Image.open(self.home_blob_3_img_path).resize((300,300)).rotate(20)
+        self.home_blob_3_img = ImageTk.PhotoImage(self.home_blob_3_img)
+
+        self.play_btn_img_path = 'assets\image\play.png'
+        self.play_btn_img = Image.open(self.play_btn_img_path).resize((40,40))
+        self.play_btn_img = ImageTk.PhotoImage(self.play_btn_img)
+        
+        self.pause_btn_img_path = 'assets\image\pause.png'
+        self.pause_btn_img = Image.open(self.pause_btn_img_path).resize((40,40))
+        self.pause_btn_img = ImageTk.PhotoImage(self.pause_btn_img)
+        
+        self.reset_btn_img_path = r'assets\image\reset.png'
+        self.reset_btn_img = Image.open(self.reset_btn_img_path).resize((40,40))
+        self.reset_btn_img = ImageTk.PhotoImage(self.reset_btn_img)
+        
+        self.complete_btn_img_path = r'assets\image\complete.png'
+        self.complete_btn_img = Image.open(self.complete_btn_img_path).resize((40,40))
+        self.complete_btn_img = ImageTk.PhotoImage(self.complete_btn_img)
+        
+        self.circle_blob_img_path = r'assets\image\circle-blob.png'
+        self.circle_blob_img = Image.open(self.circle_blob_img_path).resize((580,580))
+        self.circle_blob_img = ImageTk.PhotoImage(self.circle_blob_img)
+
+        self.done_img_path = "assets\image\done.png"
+        self.done_img = Image.open(self.done_img_path).resize((35,35))
+        self.done_img = ImageTk.PhotoImage(self.done_img)
+        return
+
     def create_ui(self) -> None:
 
-        if True: # icons
-            icon = Image.open("assets\image\icon.png").resize((100,40))
-            self.icon = ImageTk.PhotoImage(icon)
-            self.red_dial = Image.open("assets/image/red-dial.png").resize((400,400))
-            self.red_dial = ImageTk.PhotoImage(self.red_dial)
-            self.green_dial = Image.open("assets\image\green-dial.png").resize((400,400))
-            self.green_dial = ImageTk.PhotoImage(self.green_dial)
-            self.blue_dial = Image.open("assets/image/blue-dial.png").resize((400,400))
-            self.blue_dial = ImageTk.PhotoImage(self.blue_dial)
-            self.reset_img = Image.open("assets/image/reset.png").resize((35,35))
-            self.reset_img = ImageTk.PhotoImage(self.reset_img)
-            self.play_img = Image.open("assets\image\play.png").resize((35,35))
-            self.play_img = ImageTk.PhotoImage(self.play_img)
-            self.pause_img = Image.open("assets\image\pause.png").resize((35,35))
-            self.pause_img = ImageTk.PhotoImage(self.pause_img)
-            self.complete_img = Image.open("assets\image\complete.png").resize((35,35))
-            self.complete_img = ImageTk.PhotoImage(self.complete_img)
-            self.done = Image.open("assets\image\done.png").resize((50,50))
-            self.done = ImageTk.PhotoImage(self.done)
-            self.minute_hand_img = Image.open("assets\image\minute-hand.png").resize((100,100))
-            self.minute_hand_img = ImageTk.PhotoImage(self.minute_hand_img)
-            self.second_hand_img = Image.open("assets\image\second-hand.png").resize((160,160))
-            self.second_hand_img = ImageTk.PhotoImage(self.second_hand_img)
-            self.dot = Image.open("assets\image\dot.png").resize((30,30))
-            self.dot = ImageTk.PhotoImage(self.dot)
+        # Nav Part
+        canvas = Canvas(bg=BG_COLOR,highlightthickness=0)
+        canvas.create_rectangle(0,0,1280,60,fill=GREEN_COLOR,width=0)
+        canvas.create_image(1280,0,anchor=NE,image=self.logo_pattern_img)
+        canvas.create_image(1275,30,anchor=NE,image=self.logo_img)
+        canvas.pack(fill='both',expand=True)
+        
+        setting_btn = Button(image=self.setting_img,
+                             cursor=self.btn_cursor,
+                             bg=GREEN_COLOR,
+                             borderwidth=0,
+                             activebackground=GREEN_COLOR,
+                             command=self.setting)
+        setting_btn.place(relx=0.01,rely=0.01)
+        
+        # Clock Part
 
-
-        logo_img = Label(image=self.icon,
-                         bg=BG_COLOR,anchor=W)
-        logo_img.grid(row=1,column=1)
-
-        show_pixela_btn = Button(text="📊",
-                              font=FONT,
-                              borderwidth=0,
-                              bg=BG_COLOR,
-                              activebackground=BG_COLOR,
-                              command=lambda : Pixela_UI(self.window),
-                              fg=RED_COLOR,
-                              activeforeground=RED_COLOR)
-        show_pixela_btn.grid(row=1,column=2)
-
-        settings_btn = Button(text="⚙",
-                              font=FONT,
-                              borderwidth=0,
-                              bg=BG_COLOR,
-                              activebackground=BG_COLOR,
-                              command=self.setting)
-        settings_btn.grid(row=1,column=3)
-
-        self.title_text = Label(text="Timer",font = FONT,
-                           bg=BG_COLOR,
-                           fg=RED_COLOR)
-        self.title_text.grid(row=2,column=1,columnspan=3)
-
-        self.clock = Canvas(height=400,width=400,
+        self.clock = Canvas(height=660,width=900,
                        bg=BG_COLOR,
                        highlightthickness=0)
-        self.clock_face = self.clock.create_image(200,200,
-                                  image = self.blue_dial)        
-        self.clock_second = self.clock.create_image(200,200,
-                                          image = self.second_hand_img)
-        self.clock_minute = self.clock.create_image(200,200,
-                                          image = self.minute_hand_img)
-        self.clock.create_image(200,200,
-                                          image = self.dot)
-        self.clock.grid(row=3,column=1,columnspan=3,pady=(0,20)) 
-
-        self.play_pause_btn = Button(image=self.play_img,
-                            bg=BG_COLOR,
-                            activebackground=BG_COLOR,
-                            borderwidth=0,
-                            command=self.play_pause)
-        self.play_pause_btn.grid(row=4,column=1)
+        self.clock.create_image(190,120,image=self.home_blob_1_img)
+        self.clock.create_image(190,520,image=self.home_blob_2_img)
+        self.clock.create_image(770,270,image=self.home_blob_3_img)
+        self.clock_face = self.clock.create_image(450,330,image = self.blue_dial_img) 
+        self.clock_second_hand = self.clock.create_image(450,330,image = self.second_hand_img) 
+        self.clock_minute_hand = self.clock.create_image(450,330,image = self.minute_hand_img) 
+        self.clock.create_image(450,330,image = self.dot_img) 
+        self.clock.place(relx=0,rely=1,anchor=SW)
         
-        self.complete_btn = Button(image=self.complete_img,
-                            bg=BG_COLOR,
-                            activebackground=BG_COLOR,
+        self.done_frame = Frame(height=200,width=50,bg=RED_COLOR)
+        self.done_frame.place(relx=0.595,rely=.3)
+        
+
+
+        self.title_text = self.clock.create_text(190,525,text="Idle",
+                                            fill=BG_COLOR,angle=-10,
+                                            font=self.font)
+        
+        self.play_pause_btn = Button(image=self.play_btn_img,
+                            bg=RED_COLOR,
+                            activebackground=RED_COLOR,
                             borderwidth=0,
-                            command=self.complete)
-        self.complete_btn.grid(row=4,column=2)
-
-        reset = Button(image=self.reset_img,
-                            bg=BG_COLOR,
-                            activebackground=BG_COLOR,
+                            command=self.play_pause,
+                            cursor=self.btn_cursor)
+        self.play_pause_btn.place(relx=0.12,rely=0.21)
+        
+        complete_btn = Button(image=self.complete_btn_img,
+                            bg=RED_COLOR,
+                            activebackground=RED_COLOR,
                             borderwidth=0,
-                            command=self.call_reset_timer)
-        reset.grid(row=4,column=3)
+                            command=self.complete,
+                            cursor=self.btn_cursor)
+        complete_btn.place(relx=0.12,rely=0.29)
 
-        self.done_frame = Frame(self.window,width=400,
-                        bg=BG_COLOR)
-        self.done_frame.grid(row=5,column=1,columnspan=3,pady=(10,0))
+        reset = Button(image=self.reset_btn_img,
+                            bg=RED_COLOR,
+                            activebackground=RED_COLOR,
+                            borderwidth=0,
+                            command=self.call_reset_timer,
+                            cursor=self.btn_cursor)
+        reset.place(relx=0.16,rely=0.15)
+        
 
-        return 
+        # Data show part
+        data = self.get_today_hours()
+        
+        data_canvas = Canvas(bg=BG_COLOR,highlightthickness=0,height=540,width=320)
+        data_canvas.create_image(140,285,image=self.circle_blob_img)
+        data_canvas.place(relx=0.689,rely=1,anchor=SW)
+        data_canvas.create_text(223,85,text="Today",
+                                        fill=YELLOW_COLOR,
+                                        font=('Helvetica 30 bold'))
+        data_canvas.create_text(230,245,text="Hours",
+                                        fill=YELLOW_COLOR,
+                                        font=('Helvetica 30 bold'))
+        data_canvas.create_text(90,325,text="Mins",
+                                        fill=YELLOW_COLOR,
+                                        font=('Helvetica 30 bold'))
+        self.hour_text = data_canvas.create_text(100,185,text=data['hours'],
+                                        fill=YELLOW_COLOR,
+                                        font=self.font)
+        self.minute_text = data_canvas.create_text(210,375,text=data['minutes'],
+                                        fill=YELLOW_COLOR,
+                                        font=self.font)
+        pixela_btn = Button(text="Details",
+                            bg=RED_COLOR,
+                            fg=YELLOW_COLOR,
+                            activebackground=RED_COLOR,
+                            activeforeground=YELLOW_COLOR,
+                            cursor=self.btn_cursor,
+                            font=('Helvetica 15 underline'),
+                            borderwidth=0,
+                            command=lambda : Stats_UI(self.window))
+        pixela_btn.place(relx=0.743,rely=.825,anchor=NW)
+        return
 
     def update_ui(self) -> None:
 
 
         if self.mode == "idle":
             replace_text = "Timer"
-            replace_clock_face = self.blue_dial
+            replace_clock_face = self.blue_dial_img
             
         elif self.mode == "work":
-            replace_text = "Work"
-            replace_clock_face = self.green_dial
+            replace_text = config.read_value('pixela_graph')[0]['graph_name']
+            replace_clock_face = self.green_dial_img
 
         elif self.mode == "break":
             replace_text = "Break"
-            replace_clock_face = self.red_dial
+            replace_clock_face = self.red_dial_img
 
-        self.title_text.configure(text=replace_text)
+        self.clock.itemconfig(self.title_text,text=replace_text)
         self.clock.itemconfig(self.clock_face,image = replace_clock_face)
        
         # create done images
         for child in  self.done_frame.winfo_children():
             child.destroy()
-        for _ in range(self.work_session_count):
-            done_img = Label(self.done_frame,image=self.done,bg=BG_COLOR)
-            done_img.pack(side="left",padx=5)
+        for n in range(self.work_session_count):
+            lb = Label(self.done_frame,image=self.done_img,bg=RED_COLOR)
+            lb.grid(row=n,column=1,pady=(0,5))
 
 
         if self.status == "stop" and self.mode == "idle":
-            self.play_pause_btn.configure(image=self.play_img)
+            self.play_pause_btn.configure(image=self.play_btn_img)
 
         elif self.status == "pause" and self.mode != "idle":
-            self.title_text.configure(text="Paused")
-            self.play_pause_btn.configure(image=self.play_img)
+            self.clock.itemconfig(self.title_text,text="Paused")
+            self.play_pause_btn.configure(image=self.play_btn_img)
 
         elif self.status == "play" and self.mode != "idle":
-            self.title_text.configure(text=replace_text)
-            self.play_pause_btn.configure(image=self.pause_img)
+            self.clock.itemconfig(self.title_text,text=replace_text)
+            self.play_pause_btn.configure(image=self.pause_btn_img)
         
         return
 
+    # ------------- Buttons ------------- #
     def setting(self):
-        Setting(self.window)
+        Setting_UI(self.window)
         return
 
     def play_pause(self) -> None:
@@ -293,36 +373,63 @@ class Home_UI(UI):
         except:
             pass
 
+    # ------------- pixela ------------- #
+    def get_today_hours(self) -> dict:
+        """
+            This method fetches hours and minutes worked today and returns in a dict.
+        """
+        return_data = {'hours':0,
+                       'minutes':0}
+        ## get data
+        user = config.read_value('pixela_user')
+        graph_id = config.read_value('pixela_graph')[0]['graph_id']
+        today_data = Pixela().get_graph_stats(user,graph_id)
+        today_data = today_data['todaysQuantity']
+        if today_data != 0:
+            hours = today_data // 60
+            minutes = today_data % 60
+            return_data["hours"] = hours
+            return_data["minutes"] = minutes
+
+        return return_data
+    
+
+
+    # ------------- Move Clock ------------- #
+
     def move_second_hand(self,degree,time,reset=False) -> None:
+        
+        
         if reset == True:
-            self.second_hand_img = Image.open("assets\image\second-hand.png").resize((160,160))
+            self.second_hand_img = Image.open(self.second_hand_img_path).resize((210,210))
             self.second_hand_img = ImageTk.PhotoImage(self.second_hand_img)
-            self.clock.itemconfig(self.clock_second,image = self.second_hand_img)
+            self.clock.itemconfig(self.clock_second_hand,image = self.second_hand_img)
             return
         
         to_rotate = degree * time
         
-        self.second_hand_img = Image.open("assets\image\second-hand.png").resize((160,160)).rotate(-to_rotate)
+        self.second_hand_img = self.second_hand_img = Image.open(self.second_hand_img_path).resize((210,210)).rotate(-to_rotate)
         self.second_hand_img = ImageTk.PhotoImage(self.second_hand_img)
 
-        self.clock.itemconfig(self.clock_second,image = self.second_hand_img)
+        self.clock.itemconfig(self.clock_second_hand,image = self.second_hand_img)
         return
 
     def move_minute_hand(self,degree,time,reset=False) -> None:
+        
         if reset == True:
-            self.minute_hand_img = Image.open("assets\image\minute-hand.png").resize((100,100))
+            self.minute_hand_img = Image.open(self.minute_hand_img_path).resize((150,150))
             self.minute_hand_img = ImageTk.PhotoImage(self.minute_hand_img)
-            self.clock.itemconfig(self.clock_minute,image = self.minute_hand_img)
+            self.clock.itemconfig(self.clock_minute_hand,image = self.minute_hand_img)
             
             return
         
         time = time//60 # in mins
         to_rotate = degree * time
         
-        self.minute_hand_img = Image.open("assets\image\minute-hand.png").resize((100,100)).rotate(-to_rotate)
+        self.minute_hand_img = Image.open(self.minute_hand_img_path).resize((150,150)).rotate(-to_rotate)
         self.minute_hand_img = ImageTk.PhotoImage(self.minute_hand_img)
 
-        self.clock.itemconfig(self.clock_minute,image = self.minute_hand_img)
+        self.clock.itemconfig(self.clock_minute_hand,image = self.minute_hand_img)
         return
 
     # ------------- Modes ------------- #
@@ -391,37 +498,137 @@ class Home_UI(UI):
         self.timer_id=self.window.after(self.speed,self.countdown,self.current_time)
         return
 
-class Setting(UI):
+class Setting_UI(UI):
     def __init__(self,window) -> None:
         super().__init__()
         self.window = window
         self.window.title("Pixela Graph | E Clock")
+
+        self.title_font = ("Helvetica",30,'bold')
+        self.content_font = ("Helvetica",15,'bold')
         # remove all and create
         self.clear()    
+        self.initialize_img()
         self.create_ui()
 
-    def create_ui(self):
+    def initialize_img(self):
+        self.logo_pattern_img_path = "assets\image\pattern.png"
+        self.logo_pattern_img = Image.open(self.logo_pattern_img_path).resize((300,300))
+        self.logo_pattern_img = ImageTk.PhotoImage(self.logo_pattern_img)
+        
+        self.logo_img_path = "assets\image\icon.png"
+        self.logo_img = Image.open(self.logo_img_path).resize((194,78))
+        self.logo_img = ImageTk.PhotoImage(self.logo_img)
+        
+        self.back_img_path = r"assets\image\back.png"
+        self.back_img = Image.open(self.back_img_path).resize((40,40))
+        self.back_img = ImageTk.PhotoImage(self.back_img)
+        
+        self.create_img_path = r"assets\image\add.png"
+        self.create_img = Image.open(self.create_img_path).resize((40,40))
+        self.create_img = ImageTk.PhotoImage(self.create_img)
 
-        self.name_input = Entry(width=15)
-        name_lb = Label( text="Enter Pixela Graph Name")
-        reset_btn = Button(text="❌",
-                           font=FONT,
-                            borderwidth=0,
-                            bg=BG_COLOR,
-                            activebackground=BG_COLOR,
-                            command=self.call_config_reset)
-        create_btn = Button(text="Create",
-                           font=FONT,
-                            borderwidth=0,
-                            bg=BG_COLOR,
-                            activebackground=BG_COLOR,
-                            command=self.call_create_pixela)
-        back_btn = Button(text="back",command=self.back)
-        back_btn.pack()
-        name_lb.pack(side="top")
-        self.name_input.pack(side="left")
-        create_btn.pack(side="left")
-        reset_btn.pack(side="right")
+        
+        return
+
+    def create_ui(self):
+        # Nav Part
+        canvas = Canvas(bg=BG_COLOR,highlightthickness=0)
+        canvas.create_rectangle(0,0,1280,60,fill=GREEN_COLOR,width=0)
+        canvas.create_image(1280,0,anchor=NE,image=self.logo_pattern_img)
+        canvas.create_image(1275,30,anchor=NE,image=self.logo_img)
+        canvas.pack(fill='both',expand=True)
+        
+        back_btn = Button(image=self.back_img,
+                             cursor=self.btn_cursor,
+                             bg=GREEN_COLOR,
+                             borderwidth=0,
+                             activebackground=GREEN_COLOR,
+                             command=self.back)
+        back_btn.place(relx=0.01,rely=0.01)
+
+        window = Frame(height=600,bg=BG_COLOR)
+        window.place(relwidth=.8,relx=0,rely=0.1)
+
+        top_window = Frame(window,height=300,bg=BG_COLOR)
+        top_window.pack(side="top",fill="x",expand=True,padx=(20,0),pady=(20,0))
+        
+        bottom_window = Frame(window,height=300,bg=BG_COLOR)
+        bottom_window.pack(side="top",fill="x",expand=True,padx=(20,0),pady=(20,0))
+
+        if True: # Top window
+        
+            user_data = config.read_value('pixela_user')
+            token_data = config.read_value('pixela_token')
+            graph_id_data = config.read_value('pixela_graph')[0]['graph_id']
+            graph_name_data = config.read_value('pixela_graph')[0]['graph_name']
+
+
+            pixela_title = Label(top_window,text="Pixela Info",font=self.title_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_title.grid(row=1,column=1,columnspan=2,sticky=W,pady=(0,20))
+
+            pixela_user_lb = Label(top_window,text="User",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_user_ans = Label(top_window,text=user_data,font=self.content_font,bg=BG_COLOR,fg=PURPLE_COLOR)
+            pixela_user_lb.grid(row=2,column=1,sticky=W)
+            pixela_user_ans.grid(row=2,column=3,sticky=W)
+            
+            pixela_token_lb = Label(top_window,text="Token",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_token_ans = Label(top_window,text=token_data,font=self.content_font,bg=BG_COLOR,fg=PURPLE_COLOR)
+            pixela_token_lb.grid(row=3,column=1,sticky=W)
+            pixela_token_ans.grid(row=3,column=3,sticky=W)
+            
+            pixela_graph_id_lb = Label(top_window,text="Graph ID",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_graph_id_ans = Label(top_window,text=graph_id_data,font=self.content_font,bg=BG_COLOR,fg=PURPLE_COLOR)
+            pixela_graph_id_lb.grid(row=4,column=1,sticky=W)
+            pixela_graph_id_ans.grid(row=4,column=3,sticky=W)
+            
+            pixela_graph_name_lb = Label(top_window,text="Graph Name",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_graph_name_ans = Label(top_window,text=graph_name_data,font=self.content_font,bg=BG_COLOR,fg=PURPLE_COLOR)
+            pixela_graph_name_lb.grid(row=5,column=1,sticky=W)
+            pixela_graph_name_ans.grid(row=5,column=3,sticky=W)
+
+            pixela_divider_placeholder1 = Label(top_window,text=":",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_divider_placeholder2 = Label(top_window,text=":",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_divider_placeholder3 = Label(top_window,text=":",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_divider_placeholder4 = Label(top_window,text=":",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            pixela_divider_placeholder1.grid(row=2,column=2)
+            pixela_divider_placeholder2.grid(row=3,column=2)
+            pixela_divider_placeholder3.grid(row=4,column=2)
+            pixela_divider_placeholder4.grid(row=5,column=2)
+
+            line = Canvas(top_window,height=2,width=1000,bg=GREEN_COLOR,highlightthickness=0)
+            line.grid(row=6,column=1,columnspan=3,sticky=W,pady=(30,0))
+
+
+
+        if True: # Bottom Window
+            ## Left side
+
+            account_title = Label(bottom_window,text="Account",font=self.title_font,bg=BG_COLOR,fg=RED_COLOR)
+            account_title.grid(row=1,column=1,sticky=W,pady=(0,20))
+            create_lb = Label(bottom_window,text="Create new",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            create_lb.grid(row=2,column=1,sticky=W)
+            graph_name_lb = Label(bottom_window,text="Enter graph name",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            divider_placeholder1 = Label(bottom_window,text=":",font=self.content_font,bg=BG_COLOR,fg=RED_COLOR)
+            self.graph_name_etr = Entry(bottom_window,width=20,font=self.content_font,fg=RED_COLOR,bg=BG_COLOR,relief="sunken")
+            graph_name_lb.grid(row=3,column=1,sticky=W)
+            divider_placeholder1.grid(row=3,column=2,sticky=W)
+            self.graph_name_etr.grid(row=3,column=3,sticky=W)
+            graph_create_btn = Button(bottom_window,image=self.create_img,bg=BG_COLOR,activebackground=BG_COLOR,borderwidth=0,command=self.call_create_pixela,cursor=self.btn_cursor)
+            graph_create_btn.grid(row=4,column=1,columnspan=3,pady=(20,0))
+
+            ## Divider 
+            line = Canvas(bottom_window,width=2,bg=GREEN_COLOR,highlightthickness=0)
+            line.grid(row=1,column=4,rowspan=10,sticky=N,pady=(50,0),padx=(120,20))
+
+            ## Right side
+
+            reset_title = Label(bottom_window,text="Reset",font=self.title_font,bg=BG_COLOR,fg=RED_COLOR)
+            reset_title.grid(row=1,column=5,sticky=W,pady=(0,20))
+            reset_btn = Button(bottom_window,text="All settings",font=self.content_font,bg=BG_COLOR,activebackground=BG_COLOR,fg=RED_COLOR,activeforeground=RED_COLOR,borderwidth=0,command=self.call_config_reset,cursor=self.btn_cursor)
+            reset_btn.grid(row=2,column=5,sticky=W)
+            pass    
+
         return
 
     def back(self):
@@ -439,7 +646,7 @@ class Setting(UI):
         if Config().read_value('pixela_token') != None:
             messagebox.showwarning("Failed!","User already created.")
             return False
-        name = self.name_input.get()
+        name = self.graph_name_etr.get()
         if name == " " or name == "":
             messagebox.showerror("Error!","Enter name for the graph.")
             return False
@@ -449,21 +656,44 @@ class Setting(UI):
         messagebox.showerror("Error!","Some other error. Line 464")
         return False
 
-class Pixela_UI(UI):
+class Stats_UI(UI):
     def __init__(self,window) -> None:
         super().__init__()
         if config.read_value("pixela_user") == None:
             messagebox.showwarning("Warning","User not found.\nCreate a new user in settings.")
             return
         self.window = window
-        self.window.title("Pixela Graph | E Clock")
-        self.window.minsize(1280,720)
+        self.window.title("Stats | E Clock")
         self.font_heading = ("Calibri",30,"bold")
         self.font_content = ("Calibri",20,"bold")
 
         # remove all and create
         self.clear()    
-        self.create_ui()
+
+
+        self.initialize_img()
+        self.create_ui2()
+        return
+
+    def initialize_img(self):
+        self.logo_pattern_img_path = "assets\image\pattern.png"
+        self.logo_pattern_img = Image.open(self.logo_pattern_img_path).resize((300,300))
+        self.logo_pattern_img = ImageTk.PhotoImage(self.logo_pattern_img)
+        
+        self.logo_img_path = "assets\image\icon.png"
+        self.logo_img = Image.open(self.logo_img_path).resize((194,78))
+        self.logo_img = ImageTk.PhotoImage(self.logo_img)
+        
+        self.back_img_path = r"assets\image\back.png"
+        self.back_img = Image.open(self.back_img_path).resize((40,40))
+        self.back_img = ImageTk.PhotoImage(self.back_img)
+
+        self.card_bg_img_path = r"assets\image\card-bg.png"
+        self.card_bg_img = Image.open(self.card_bg_img_path).resize((325,163))
+        self.card_bg_img = ImageTk.PhotoImage(self.card_bg_img)
+
+
+        return
 
     def get_data(self) -> None:
         user = config.read_value("pixela_user")
@@ -472,114 +702,139 @@ class Pixela_UI(UI):
         Pixela().save_graph_svg(user,graph_id)
 
         data = Pixela().get_graph_stats(user,graph_id)
-        self.date = dt.now()
-        self.date = self.date.strftime("%B %d,%Y")
     
         today_hour_data = int(data["todaysQuantity"])
-        self.today_hour_data = today_hour_data / 60
+        self.today_hour,self.today_mins = self.get_time(today_hour_data)
 
         avg_hour_data = int(data["avgQuantity"])
-        self.avg_hour_data = avg_hour_data/60
+        self.avg_hour,self.avg_mins = self.get_time(avg_hour_data)
 
         total_hour_data = int(data["totalQuantity"])
-        self.total_hour_data = total_hour_data/60
+        self.total_hour,self.total_mins = self.get_time(total_hour_data)
+
 
         most_hour_data = int(data["maxQuantity"])
-        self.most_hour_data = most_hour_data/60
-        self.most_hour_date = (data["maxDate"])
+        self.most_hour,self.most_mins = self.get_time(most_hour_data)
+
 
         least_hour_data = int(data["minQuantity"])
-        self.least_hour_data = least_hour_data/60
-        self.least_hour_date = (data["minDate"])
+        self.least_hour,self.least_mins = self.get_time(least_hour_data)
 
         return
 
-    def create_ui(self) -> None:
+    def get_time(self,time) -> dict:
+        """
+            This method converts given time to hours and minutes.
+        """
+        
+        ## get data
+        if time != 0:
+            hours = time // 60
+            minutes = time % 60
+            return_data = (hours,minutes)
+            return return_data
+        return (0,0)
+    
+    def create_ui2(self) -> None:
+
         self.get_data()
 
-        ## try to make img show up wihtout using global variable
+        # Nav Part
+        canvas = Canvas(bg=BG_COLOR,highlightthickness=0)
+        canvas.create_rectangle(0,0,1280,60,fill=GREEN_COLOR,width=0)
+        canvas.create_image(1280,0,anchor=NE,image=self.logo_pattern_img)
+        canvas.create_image(1275,30,anchor=NE,image=self.logo_img)
+        canvas.pack(fill='both',expand=True)
+        
+        back_btn = Button(image=self.back_img,
+                             cursor=self.btn_cursor,
+                             bg=GREEN_COLOR,
+                             borderwidth=0,
+                             activebackground=GREEN_COLOR,
+                             command=self.back)
+        back_btn.place(relx=0.0,rely=0.01)
+
+
+ 
+        # Stats Card Part
+        card_frame = Frame(height=350,width=1050,bg=BG_COLOR)
+        card_frame.place(relx=0.0,rely=.1)
+
+        graph_name = config.read_value('pixela_graph')[0]['graph_name']
+        card_title = Label(text=graph_name,font=self.font_heading,fg=RED_COLOR,bg=BG_COLOR)
+        card_title.place(relx=.8,rely=.3)
+
+        card1_hours = 0
+        card1_mins = 0
+        card1 = Canvas(card_frame,height=162,width=325,bg=BG_COLOR,highlightthickness=0)
+        card1.create_image(165,82,image=self.card_bg_img)
+        card1.create_text(165,35,text="Total Time",font=self.font_heading,fill=YELLOW_COLOR)       
+        card1.create_text(165,75,text=f"{self.total_hour} Hours",font=self.font_content,fill=YELLOW_COLOR)       
+        card1.create_text(165,100,text="&",font=self.font_content,fill=YELLOW_COLOR)       
+        card1.create_text(165,125,text=f"{self.total_mins} Minutes",font=self.font_content,fill=YELLOW_COLOR)       
+
+        card2 = Canvas(card_frame,height=162,width=325,bg=BG_COLOR,highlightthickness=0)
+        card2.create_image(165,82,image=self.card_bg_img)
+        card2.create_text(165,35,text="Average Time",font=self.font_heading,fill=YELLOW_COLOR)       
+        card2.create_text(165,75,text=f"{self.avg_hour} Hours",font=self.font_content,fill=YELLOW_COLOR)       
+        card2.create_text(165,100,text="&",font=self.font_content,fill=YELLOW_COLOR)       
+        card2.create_text(165,125,text=f"{self.avg_mins} Minutes",font=self.font_content,fill=YELLOW_COLOR)   
+        
+        card3 = Canvas(card_frame,height=162,width=325,bg=BG_COLOR,highlightthickness=0)
+        card3.create_image(165,82,image=self.card_bg_img)
+        card3.create_text(165,35,text="Most Hours",font=self.font_heading,fill=YELLOW_COLOR)       
+        card3.create_text(165,75,text=f"{self.most_hour} Hours",font=self.font_content,fill=YELLOW_COLOR)       
+        card3.create_text(165,100,text="&",font=self.font_content,fill=YELLOW_COLOR)       
+        card3.create_text(165,125,text=f"{self.most_mins} Minutes",font=self.font_content,fill=YELLOW_COLOR)   
+
+        card4 = Canvas(card_frame,height=162,width=325,bg=BG_COLOR,highlightthickness=0)
+        card4.create_image(165,82,image=self.card_bg_img)
+        card4.create_text(165,35,text="Least Hours",font=self.font_heading,fill=YELLOW_COLOR)       
+        card4.create_text(165,75,text=f"{self.least_hour} Hours",font=self.font_content,fill=YELLOW_COLOR)       
+        card4.create_text(165,100,text="&",font=self.font_content,fill=YELLOW_COLOR)       
+        card4.create_text(165,125,text=f"{self.least_mins} Minutes",font=self.font_content,fill=YELLOW_COLOR)   
+        
+        card5 = Canvas(card_frame,height=162,width=325,bg=BG_COLOR,highlightthickness=0)
+        card5.create_image(165,82,image=self.card_bg_img)
+        card5.create_text(165,35,text="Today",font=self.font_heading,fill=YELLOW_COLOR)       
+        card5.create_text(165,75,text=f"{self.today_hour} Hours",font=self.font_content,fill=YELLOW_COLOR)       
+        card5.create_text(165,100,text="&",font=self.font_content,fill=YELLOW_COLOR)       
+        card5.create_text(165,125,text=f"{self.today_mins} Minutes",font=self.font_content,fill=YELLOW_COLOR)   
+        
+        card1.grid(row=1,column=1,padx=(20,0),pady=(10,10))
+        card2.grid(row=2,column=1,padx=(20,0))
+        card3.grid(row=1,column=2,pady=(10,10))
+        card4.grid(row=2,column=2)
+        card5.grid(row=1,rowspan=2,column=3)
+
+
+        # Pixela Chart Part
         global graph_img
-        graph_img = Image.open("data\graph.png").resize((1170,243))
+        graph_img = Image.open("data\graph.png")
+        width,height = graph_img.size
+        left = 20
+        right = width - 50
+        top = 2
+        bottom = height
+        graph_img = graph_img.crop((left, top, right, bottom))
+        graph_img = graph_img.resize((1100,275))
         graph_img = ImageTk.PhotoImage(graph_img)
-        btn = Button(text="Back",command=self.return_back)
-        btn.grid(row=0,column=1,columnspan=2)
-        # canvas = Canvas(height=243,width=550)
-        # canvas.create_image(277,60,image=graph_img)
-        # canvas.pack()
-
-        canvas = Label(image=graph_img)
-        canvas.grid(row=1,column=1,columnspan=2)
-
-        
-        
-        date_lb = Label(text= f"Date     ",
-                        font=self.font_heading,
-                        bg=BG_COLOR)
-        date_lb2 = Label(text= self.date,
-                        font=self.font_content,
-                        bg=BG_COLOR)
-        date_lb.grid(row=2,column=1)
-        date_lb2.grid(row=2,column=2)
-
-        today_hour_lb = Label(text="Today's hours",
-                              font=self.font_heading,
-                              bg=BG_COLOR)
-        today_hour_lb2 = Label(text=self.today_hour_data,
-                              font=self.font_content,
-                              bg=BG_COLOR)
-        today_hour_lb.grid(row=3,column=1)
-        today_hour_lb2.grid(row=3,column=2)
-
-        
-        avg_hour_lb = Label(text="Avg hours",
-                              font=self.font_heading,
-                              bg=BG_COLOR)
-        avg_hour_lb2 = Label(text=self.avg_hour_data,
-                              font=self.font_content,
-                              bg=BG_COLOR)
-        avg_hour_lb.grid(row=4,column=1)
-        avg_hour_lb2.grid(row=4,column=2)
-
-        total_hour_lb = Label(text="Total hours",
-                              font=self.font_heading,
-                              bg=BG_COLOR)
-        total_hour_lb2 = Label(text=self.total_hour_data,
-                              font=self.font_content,
-                              bg=BG_COLOR)
-        total_hour_lb.grid(row=5,column=1)
-        total_hour_lb2.grid(row=5,column=2)
-
-        most_hour_lb = Label(text="Most hours",
-                              font=self.font_heading,
-                              bg=BG_COLOR)
-        most_hour_lb2 = Label(text=self.most_hour_data,
-                              font=self.font_content,
-                              bg=BG_COLOR)
-        most_hour_lb3 = Label(text=self.most_hour_date,
-                              font=self.font_content,
-                              bg=BG_COLOR)
-        most_hour_lb.grid(row=6,column=1)
-        most_hour_lb2.grid(row=6,column=2)
-        most_hour_lb3.grid(row=6,column=3)
-
-        least_hour_lb = Label(text="Least hours",
-                              font=self.font_heading,
-                              bg=BG_COLOR)
-        least_hour_lb2 = Label(text=self.least_hour_data,
-                              font=self.font_content,
-                              bg=BG_COLOR)
-        least_hour_lb3 = Label(text=self.least_hour_date,
-                              font=self.font_content,
-                              bg=BG_COLOR)
-        least_hour_lb.grid(row=7,column=1)
-        least_hour_lb2.grid(row=7,column=2)
-        least_hour_lb3.grid(row=7,column=3)
 
 
+        pixela_chart_btn = Button(image=graph_img,bg=BG_COLOR,activebackground=BG_COLOR,command=self.open_pixela_chart,borderwidth=0,cursor=self.btn_cursor)
+        pixela_chart_btn.place(relx=0.05,rely=.6)
         return
-    
-    def return_back(self):
+
+    def back(self):
         Home_UI(self.window)
+        return
+
+    def open_pixela_chart(self):
+        username = config.read_value('pixela_user')
+        graph_id = config.read_value('pixela_graph')[0]['graph_id']
+        url = f"https://pixe.la/v1/users/{username}/graphs/{graph_id}.html"
+
+        webbrowser.open(url) 
         return
 
     pass

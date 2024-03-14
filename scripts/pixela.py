@@ -46,7 +46,7 @@ class Pixela():
         symbols = ['!', '@', '#', '$']
         
         if True: # for token
-            total_length = random.randint(8,128)
+            total_length = random.randint(8,32)
             rem_length = total_length
             lenght_char = random.randint(5,total_length-3)
             rem_length -= lenght_char
@@ -204,14 +204,23 @@ class Pixela():
 
     def get_graph_stats(self,user:str,graph_id:str):
         """ 
-            This method gets quantity data of a pixel in the graph for the provided date.\n
-            Requires token, user, graph_id, date:yyyyMMdd.\n
-            Returns 'quantity' as 0 if no value was found.
+            This method gets all stats of the pixela graph\n
             Returns False if any error occur.
         """
+        if user is None or graph_id is None:
+            return {
+                "totalPixelsCount":0,
+                "maxQuantity":0,
+                "minQuantity":0,
+                "maxDate":"2017-12-31",
+                "minDate":"2018-01-01",
+                "totalQuantity":0,
+                "avgQuantity":0,
+                "todaysQuantity":0,
+                "yesterdayQuantity":0
+            }
         endpoint = f"{self.endpoint}/{user}/graphs/{graph_id}/stats"
 
-        
         response = requests.get(endpoint)
         response.raise_for_status()
         
@@ -227,13 +236,12 @@ class Pixela():
         response = requests.get(url=endpoint)
         response.raise_for_status()
         svg = response.text
+        old = '<rect x="0" y="0" width="720" height="135" fill="white" fill-opacity="0.5" stroke="none"/><g transform="translate(16, 20)">'
+        new = '<rect x="0" y="0" width="720" height="135" fill="#EAFFD0" fill-opacity="1" stroke="none"/><g transform="translate(16, 20)">'
+        svg = svg.replace(old,new)
         with open("data\graph.svg","w") as svg_file:
             svg_file.write(svg)
         drawing = svg2rlg('data\graph.svg')
         renderPM.drawToFile(drawing, "data\graph.png", "PNG")
         return
 
-    def edit_svg(self):
-        
-        
-        return
